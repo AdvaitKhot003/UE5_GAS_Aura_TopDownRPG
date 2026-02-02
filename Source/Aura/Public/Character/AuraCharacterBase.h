@@ -16,5 +16,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
 };
