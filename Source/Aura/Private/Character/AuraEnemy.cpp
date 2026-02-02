@@ -3,6 +3,7 @@
 
 #include "Character/AuraEnemy.h"
 #include "Components/CapsuleComponent.h"
+#include "Aura/Aura.h"
 
 AAuraEnemy::AAuraEnemy()
 {
@@ -31,10 +32,14 @@ AAuraEnemy::AAuraEnemy()
 
 void AAuraEnemy::HighlightActor()
 {
-	bIsHighlighted = true;
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	WeaponMesh->SetRenderCustomDepth(true);
+	WeaponMesh->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
 void AAuraEnemy::UnhighlightActor()
 {
-	bIsHighlighted = false;
+	GetMesh()->SetRenderCustomDepth(false);
+	WeaponMesh->SetRenderCustomDepth(false);
 }

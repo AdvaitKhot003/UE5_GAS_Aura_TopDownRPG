@@ -19,7 +19,4 @@ public:
 	AAuraEnemy();
 	virtual void HighlightActor() override;
 	virtual void UnhighlightActor() override;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	bool bIsHighlighted = false;
 };
