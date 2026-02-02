@@ -29,15 +29,16 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UCharacterMovementComponent> AuraBaseMovementComponent;
 
-	UPROPERTY(Transient)
-	float CachedGroundSpeed = 0.f;
-
-	UPROPERTY(Transient)
-	bool CachedHasAcceleration = false;
-
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	float GroundSpeed;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	bool bHasAcceleration;
+	
+private:
+	UPROPERTY(Transient)
+	float CachedGroundSpeed = 0.f;
+
+	UPROPERTY(Transient)
+	bool CachedHasAcceleration = false;
 };
