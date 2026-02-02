@@ -7,6 +7,7 @@
 #include "AuraPlayerController.generated.h"
 
 class UDataAsset_AuraInputConfig;
+struct FInputActionValue;
 
 /**
  * 
@@ -21,7 +22,11 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|DataAsset")
+private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|DataAsset", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UDataAsset_AuraInputConfig> AuraInputConfig;
+	
+	void Input_Move(const FInputActionValue& InputActionValue);
 };
