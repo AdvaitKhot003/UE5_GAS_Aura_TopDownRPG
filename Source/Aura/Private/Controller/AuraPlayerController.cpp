@@ -41,12 +41,8 @@ void AAuraPlayerController::TraceUnderCursor()
 			CurrentHitResultActor.SetInterface(Cast<IEnemyInterface>(HitResultActor));
 		}
 	}
-
-	// No state change → no work
-	if (LastHitResultActor == CurrentHitResultActor)
-	{
-		return;
-	}
+	
+	if (LastHitResultActor == CurrentHitResultActor) return;
 
 	if (LastHitResultActor)
 	{
@@ -63,7 +59,7 @@ void AAuraPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	checkf(AuraInputConfig, TEXT("Warning: AuraInputConfig is nullptr in BeginPlay of %s"), *GetName());
+	check(AuraInputConfig);
 
 	if (!IsLocalController()) return;
 

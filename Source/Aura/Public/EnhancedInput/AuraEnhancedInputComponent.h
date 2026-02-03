@@ -26,7 +26,7 @@ void UAuraEnhancedInputComponent::BindNativeInputAction(const UDataAsset_AuraInp
 	const FGameplayTag& InInputTag, ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunction Function)
 {
 	checkf(InInputConfig,
-		TEXT("Warning: UDataAsset_InputConfig* InInputConfig is nullptr in BindNativeInputAction."));
+		TEXT("Warning: UDataAsset_AuraInputConfig* InInputConfig is nullptr in BindNativeInputAction."));
 
 	if (UInputAction* FoundInputAction = InInputConfig->FindNativeInputActionByTag(InInputTag))
 	{
