@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Controller/AuraPlayerState.h"
 
 AAuraPlayer::AAuraPlayer()
 {
@@ -49,4 +51,32 @@ AAuraPlayer::AAuraPlayer()
 	
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Ignore);
+}
+
+void AAuraPlayer::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
+	InitPlayerAbilityActorInfo(); // server
+}
+
+void AAuraPlayer::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	
+	InitPlayerAbilityActorInfo(); // client
+}
+
+void AAuraPlayer::InitPlayerAbilityActorInfo()
+{
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	checkf(AuraPlayerState, TEXT("AuraPlayerState is not valid in InitPlayerAbilityActorInfo"));
+	
+	UAbilitySystemComponent* AuraPlayerStateASC = AuraPlayerState->GetAbilitySystemComponent();
+	ensureMsgf(AuraPlayerStateASC, TEXT("AuraPlayerStateASC is not valid in InitPlayerAbilityActorInfo"));
+	if (!AuraPlayerStateASC) return;
+	AuraPlayerStateASC->InitAbilityActorInfo(AuraPlayerState, this);
+	
+	AbilitySystemComponent = AuraPlayerStateASC;
+	AttributeSet = AuraPlayerState->GetAttributeSet();
 }
