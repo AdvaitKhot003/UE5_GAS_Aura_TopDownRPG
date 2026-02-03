@@ -7,27 +7,14 @@
 
 AAuraEnemy::AAuraEnemy()
 {
-	UCapsuleComponent* Capsule = GetCapsuleComponent();
-
-	Capsule->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	Capsule->SetCollisionObjectType(ECC_Pawn);
-
-	// Start clean
-	Capsule->SetCollisionResponseToAllChannels(ECR_Ignore);
-
-	// Required collisions
-	Capsule->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block); // ground
-	Capsule->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block); // Movable Objects
-	Capsule->SetCollisionResponseToChannel(ECC_Pawn, ECR_Block); // other characters
-
-	// Cursor hover
-	Capsule->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
-
-	// Optional
-	Capsule->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
-
-	// Mesh = visuals only
-	GetMesh()->SetCollisionProfileName(TEXT("NoCollision"));
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+	GetMesh()->SetCollisionObjectType(ECC_Pawn);
+	GetMesh()->SetCollisionResponseToAllChannels(ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Block);
+	
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Ignore);
 }
 
 void AAuraEnemy::HighlightActor()
