@@ -9,6 +9,8 @@
 
 AAuraEnemy::AAuraEnemy()
 {
+	bReplicates = true;
+	
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	GetMesh()->SetCollisionObjectType(ECC_Pawn);
 	GetMesh()->SetCollisionResponseToAllChannels(ECR_Ignore);
@@ -30,7 +32,7 @@ void AAuraEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	UAbilitySystemComponent* AuraBaseASC = GetAbilitySystemComponent();
-	check(AuraBaseASC);
+	checkf(AuraBaseASC, TEXT("AuraBaseASC is null in BeginPlay: %s"), *GetActorNameOrLabel());
 	AuraBaseASC->InitAbilityActorInfo(this, this);
 }
 

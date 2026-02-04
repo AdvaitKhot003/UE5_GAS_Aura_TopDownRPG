@@ -70,11 +70,10 @@ void AAuraPlayer::OnRep_PlayerState()
 void AAuraPlayer::InitPlayerAbilityActorInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
-	checkf(AuraPlayerState, TEXT("AuraPlayerState is not valid in InitPlayerAbilityActorInfo"));
+	checkf(AuraPlayerState, TEXT("AuraPlayerState is null in InitPlayerAbilityActorInfo: %s"), *GetActorNameOrLabel());
 	
 	UAbilitySystemComponent* AuraPlayerStateASC = AuraPlayerState->GetAbilitySystemComponent();
-	ensureMsgf(AuraPlayerStateASC, TEXT("AuraPlayerStateASC is not valid in InitPlayerAbilityActorInfo"));
-	if (!AuraPlayerStateASC) return;
+	checkf(AuraPlayerStateASC, TEXT("AuraPlayerStateASC is null in InitPlayerAbilityActorInfo: %s"), *GetActorNameOrLabel());
 	AuraPlayerStateASC->InitAbilityActorInfo(AuraPlayerState, this);
 	
 	AbilitySystemComponent = AuraPlayerStateASC;
