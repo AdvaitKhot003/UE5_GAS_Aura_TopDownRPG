@@ -59,12 +59,12 @@ void AAuraPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	check(AuraInputConfig);
+	checkf(AuraInputConfig, TEXT("AuraInputConfig is null in BeginPlay: %s"), *GetActorNameOrLabel());
 
 	if (!IsLocalController()) return;
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	if (!Subsystem) return;
+	checkf(Subsystem, TEXT("Subsystem is null in BeginPlay: %s"), *GetActorNameOrLabel());
 	Subsystem->AddMappingContext(AuraInputConfig->InputMappingContext, 0);
 
 	bShowMouseCursor = true;

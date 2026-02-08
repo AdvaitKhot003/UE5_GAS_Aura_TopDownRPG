@@ -2,49 +2,39 @@
 
 
 #include "Actor/AuraEffectActor.h"
-#include "Components/SphereComponent.h"
-#include "AbilitySystemInterface.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
-#include "AbilitySystem/AuraAttributeSet.h"
 
 AAuraEffectActor::AAuraEffectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("EffectMesh");
-	SetRootComponent(Mesh);
 	
-	Sphere = CreateDefaultSubobject<USphereComponent>("EffectSphere");
-	Sphere->SetupAttachment(GetRootComponent());
-}
-
-void AAuraEffectActor::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (const IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OtherActor))
-	{
-		const UAbilitySystemComponent* AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent();
-		const UAuraAttributeSet* AuraAttributeSet =
-			Cast<UAuraAttributeSet>(AbilitySystemComponent->GetAttributeSet(UAuraAttributeSet::StaticClass()));
-		
-		UAuraAttributeSet* MutableAuraAttributeSet = const_cast<UAuraAttributeSet*>(AuraAttributeSet);
-		
-		MutableAuraAttributeSet->SetHealth(AuraAttributeSet->GetHealth() - 20.f);
-		MutableAuraAttributeSet->SetMana(AuraAttributeSet->GetMana() - 10.f);
-		Destroy();
-	}
-}
-
-void AAuraEffectActor::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	
+	EffectActorRoot = CreateDefaultSubobject<USceneComponent>("EffectActorRoot");
+	SetRootComponent(EffectActorRoot);
 }
 
 void AAuraEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AAuraEffectActor::ApplyGameplayEffectToTargetActor(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& GameplayEffectClass)
+{
+	if (!HasAuthority()) return;
 	
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraEffectActor::OnSphereBeginOverlap);
-	Sphere->OnComponentEndOverlap.AddDynamic(this, &AAuraEffectActor::OnSphereEndOverlap);
+	checkf(GameplayEffectClass, TEXT("GameplayEffectClass is null in ApplyGameplayEffectToTargetActor: %s"), *GetActorNameOrLabel());
+
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	checkf(TargetASC, TEXT("TargetASC is null in ApplyGameplayEffectToTargetActor: %s"), *GetActorNameOrLabel());
+
+	FGameplayEffectContextHandle EffectContextHandle = TargetASC->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(this);
+
+	const FGameplayEffectSpecHandle EffectSpecHandle =
+		TargetASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+
+	if (EffectSpecHandle.IsValid())
+	{
+		TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	}
 }
