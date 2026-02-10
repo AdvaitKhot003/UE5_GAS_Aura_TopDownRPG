@@ -18,6 +18,16 @@ void AAuraEffectActor::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AAuraEffectActor::OnBeginOverlap(AActor* TargetActor)
+{
+	
+}
+
+void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
+{
+	
+}
+
 void AAuraEffectActor::ApplyGameplayEffectToTargetActor(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& GameplayEffectClass)
 {
 	if (!HasAuthority()) return;

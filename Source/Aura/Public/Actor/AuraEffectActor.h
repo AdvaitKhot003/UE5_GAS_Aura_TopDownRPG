@@ -8,6 +8,21 @@
 
 class UGameplayEffect;
 
+UENUM(BlueprintType)
+enum class EEffectApplicationPolicy : uint8
+{
+	ApplyOnBeginOverlap,
+	ApplyOnEndOverlap,
+	DontApply
+};
+
+UENUM(BlueprintType)
+enum class EEffectRemovalPolicy : uint8
+{
+	RemoveOnEndOverlap,
+	DontRemove
+};
+
 UCLASS()
 class AURA_API AAuraEffectActor : public AActor
 {
@@ -22,11 +37,35 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> EffectActorRoot;
 	
+	UFUNCTION(BlueprintCallable)
+	void OnBeginOverlap(AActor* TargetActor);
+	
+	UFUNCTION(BlueprintCallable)
+	void OnEndOverlap(AActor* TargetActor);
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
+	bool bDestroyOnEffectRemoval = false;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
+	EEffectApplicationPolicy InstantEffectApplicationPolicy = EEffectApplicationPolicy::ApplyOnBeginOverlap;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
 	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
+	EEffectApplicationPolicy DurationEffectApplicationPolicy = EEffectApplicationPolicy::ApplyOnBeginOverlap;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
+	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
+	EEffectApplicationPolicy InfiniteEffectApplicationPolicy = EEffectApplicationPolicy::ApplyOnBeginOverlap;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
+	EEffectRemovalPolicy InfiniteEffectRemovalPolicy = EEffectRemovalPolicy::RemoveOnEndOverlap;
 	
 	UFUNCTION(BlueprintCallable)
 	void ApplyGameplayEffectToTargetActor(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& GameplayEffectClass);
