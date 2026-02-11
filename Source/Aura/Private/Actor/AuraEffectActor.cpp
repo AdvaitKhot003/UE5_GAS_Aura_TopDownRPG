@@ -89,7 +89,7 @@ void AAuraEffectActor::ApplyGameplayEffectToTargetActor(AActor* TargetActor, con
 	EffectContextHandle.AddSourceObject(this);
 
 	const FGameplayEffectSpecHandle EffectSpecHandle =
-		TargetASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+		TargetASC->MakeOutgoingSpec(GameplayEffectClass, EffectActorLevel, EffectContextHandle);
 
 	if (EffectSpecHandle.IsValid())
 	{
