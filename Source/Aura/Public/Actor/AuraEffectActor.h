@@ -25,6 +25,24 @@ enum class EEffectRemovalPolicy : uint8
 	DontRemove
 };
 
+USTRUCT(BlueprintType)
+struct FEffectApplicationConfig
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> GameplayEffectClass;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float EffectLevel = 1.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EEffectApplicationPolicy ApplicationPolicy = EEffectApplicationPolicy::DontApply;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EEffectRemovalPolicy RemovalPolicy = EEffectRemovalPolicy::DontRemove;
+};
+
 UCLASS()
 class AURA_API AAuraEffectActor : public AActor
 {
@@ -49,32 +67,13 @@ protected:
 	bool bDestroyOnEffectRemoval = false;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	EEffectApplicationPolicy InstantEffectApplicationPolicy = EEffectApplicationPolicy::DontApply;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	EEffectApplicationPolicy DurationEffectApplicationPolicy = EEffectApplicationPolicy::DontApply;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	EEffectApplicationPolicy InfiniteEffectApplicationPolicy = EEffectApplicationPolicy::DontApply;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	EEffectRemovalPolicy InfiniteEffectRemovalPolicy = EEffectRemovalPolicy::DontRemove;
+	TArray<FEffectApplicationConfig> EffectApplicationConfigs;
 	
 	UFUNCTION(BlueprintCallable)
-	void ApplyGameplayEffectToTargetActor(AActor* TargetActor, const TSubclassOf<UGameplayEffect>& GameplayEffectClass);
+	void ApplyGameplayEffectToTargetActor(AActor* TargetActor, const FEffectApplicationConfig& Config);
 	
-	UPROPERTY(Transient)
-	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
+	UFUNCTION(BlueprintCallable)
+	void RemoveInfiniteEffectsFromTargetActor(AActor* TargetActor);
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	float EffectActorLevel = 1.f;
+	TMultiMap<UAbilitySystemComponent*, FActiveGameplayEffectHandle> ActiveEffectHandles;
 };
