@@ -24,6 +24,26 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 }
 
+void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Health, OldHealth);
+}
+
+void UAuraAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, MaxHealth, OldMaxHealth);
+}
+
+void UAuraAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Mana, OldMana);
+}
+
+void UAuraAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, MaxMana, OldMaxMana);
+}
+
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
@@ -45,55 +65,76 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
+	
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
+
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
 }
 
-void UAuraAttributeSet::SetEffectProperties(const struct FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
+void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
 {
-	/** SOURCE (Instigator) **/
+    // Cache Effect context Handle
+    Props.EffectContextHandle = Data.EffectSpec.GetContext();
 
-	Props.EffectContextHandle = Data.EffectSpec.GetContext();
+    /** SOURCE (Instigator + Effect Causer) **/
 	
+	// Source Ability System Component
 	Props.SourceAbilitySystemComponent = Props.EffectContextHandle.GetInstigatorAbilitySystemComponent();
 	
-	Props.SourceAvatarActor = Props.SourceAbilitySystemComponent ? Props.SourceAbilitySystemComponent->GetAvatarActor() : nullptr;
-	
-	if (const APawn* SourcePawn = Cast<APawn>(Props.SourceAvatarActor))
+	AActor* Causer = Props.EffectContextHandle.GetEffectCauser();
+	AActor* InstigatorActor = Props.EffectContextHandle.GetInstigator();
+
+	// Source Avatar Actor
+	if (Props.SourceAbilitySystemComponent)
 	{
-		Props.SourceController = SourcePawn->GetController();
+		Props.SourceAvatarActor = Props.SourceAbilitySystemComponent->GetAvatarActor();
 	}
-
-	Props.SourceCharacter = Props.SourceController ? Props.SourceController->GetCharacter() : nullptr;
-
-	/** TARGET (This AttributeSet) **/
-
-	Props.TargetAbilitySystemComponent = GetOwningAbilitySystemComponent();
-
-	Props.TargetAvatarActor = Props.TargetAbilitySystemComponent ? Props.TargetAbilitySystemComponent->GetAvatarActor() : nullptr;
-	
-	if (const APawn* TargetPawn = Cast<APawn>(Props.TargetAvatarActor))
+	else if (Causer)
 	{
-		Props.TargetController = TargetPawn->GetController();
+		Props.SourceAvatarActor = Causer;
 	}
+	else
+	{
+		Props.SourceAvatarActor = InstigatorActor;
+	}
+	
+	// Source Controller
+    if (const APawn* SourcePawn = Cast<APawn>(Props.SourceAvatarActor))
+    {
+        Props.SourceController = SourcePawn->GetController();
+    }
+	
+    if (!Props.SourceController)
+    {
+    	if (const APawn* InstigatorPawn = Cast<APawn>(Props.EffectContextHandle.GetInstigator()))
+        {
+    		Props.SourceController = InstigatorPawn->GetController();
+        }
+    }
 
-	Props.TargetCharacter = Props.TargetController ? Props.TargetController->GetCharacter() : nullptr;
-}
+	// Source Character
+    Props.SourceCharacter = Props.SourceController ? Props.SourceController->GetCharacter() : nullptr;
 
-void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Health, OldHealth);
-}
+    /** TARGET (AttributeSet Owner) **/
 
-void UAuraAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, MaxHealth, OldMaxHealth);
-}
+	// Target Ability System Component
+    Props.TargetAbilitySystemComponent = GetOwningAbilitySystemComponent();
 
-void UAuraAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Mana, OldMana);
-}
+	// Target Avatar Actor
+    Props.TargetAvatarActor = Props.TargetAbilitySystemComponent ? Props.TargetAbilitySystemComponent->GetAvatarActor() : nullptr;
 
-void UAuraAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, MaxMana, OldMaxMana);
+	// Target Controller
+    if (const APawn* TargetPawn = Cast<APawn>(Props.TargetAvatarActor))
+    {
+        Props.TargetController = TargetPawn->GetController();
+    }
+
+	// Target Character
+    Props.TargetCharacter = Props.TargetController ? Props.TargetController->GetCharacter() : nullptr;
 }
