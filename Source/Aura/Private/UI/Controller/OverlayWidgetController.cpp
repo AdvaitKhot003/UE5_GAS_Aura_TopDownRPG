@@ -16,18 +16,21 @@ void UOverlayWidgetController::BroadcastInitialValues()
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
+	UAuraAbilitySystemComponent* AuraAbilitySystemComponent = CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
 	
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+	AuraAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetHealthAttribute()).AddUObject(this, &UOverlayWidgetController::HealthChanged);
 	
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+	AuraAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
 	
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+	AuraAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetManaAttribute()).AddUObject(this, &UOverlayWidgetController::ManaChanged);
 	
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+	AuraAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
+	
+	AuraAbilitySystemComponent->EffectAssetTags.AddUObject(this, &UOverlayWidgetController::HandleEffectTags);
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
@@ -48,4 +51,14 @@ void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) c
 void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data) const
 {
 	OnMaxManaChanged.Broadcast(Data.NewValue);
+}
+
+void UOverlayWidgetController::HandleEffectTags(const FGameplayTagContainer& AssetTags)
+{
+	for (const FGameplayTag& Tag : AssetTags)
+	{
+		const FString Message = FString::Printf(TEXT("Gameplay Effect Tag: %s"), *Tag.ToString());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Message);
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *Message);
+	}
 }

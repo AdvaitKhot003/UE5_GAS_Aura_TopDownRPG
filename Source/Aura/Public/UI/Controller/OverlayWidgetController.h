@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UI/Controller/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
@@ -42,4 +43,5 @@ protected:
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void ManaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
+	void HandleEffectTags(const FGameplayTagContainer& AssetTags);
 };
