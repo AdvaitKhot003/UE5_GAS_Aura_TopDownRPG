@@ -30,10 +30,20 @@ AAuraEnemy::AAuraEnemy()
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	InitCharacterAbilityActorInfo();
+}
 
+void AAuraEnemy::InitCharacterAbilityActorInfo()
+{
 	UAbilitySystemComponent* AuraBaseASC = GetAbilitySystemComponent();
 	checkf(AuraBaseASC, TEXT("AuraBaseASC is null in BeginPlay: %s"), *GetActorNameOrLabel());
 	AuraBaseASC->InitAbilityActorInfo(this, this);
+	
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AuraBaseASC))
+	{
+		AuraASC->CharacterAbilityActorInfoSet();
+	}
 }
 
 void AAuraEnemy::HighlightActor()

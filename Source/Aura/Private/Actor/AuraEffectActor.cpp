@@ -69,7 +69,6 @@ void AAuraEffectActor::ApplyGameplayEffectToTargetActor(AActor* TargetActor, con
 	if (!EffectSpecHandle.IsValid()) return;
 	
 	const FGameplayEffectSpec& EffectSpec = *EffectSpecHandle.Data.Get();
-	
 	const FActiveGameplayEffectHandle ActiveEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(EffectSpec);
 
 	const UGameplayEffect* GameplayEffect = EffectSpec.Def.Get();

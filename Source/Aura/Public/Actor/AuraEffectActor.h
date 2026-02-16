@@ -34,6 +34,9 @@ struct FEffectApplicationConfig
 	TSubclassOf<UGameplayEffect> GameplayEffectClass;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bOverrideEffectLevel = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (EditCondition = "bOverrideEffectLevel", EditConditionHides))
 	float EffectLevel = 1.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -64,10 +67,10 @@ protected:
 	void OnEndOverlap(AActor* TargetActor);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	bool bDestroyOnEffectRemoval = false;
+	TArray<FEffectApplicationConfig> EffectApplicationConfigs;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AppliedEffects")
-	TArray<FEffectApplicationConfig> EffectApplicationConfigs;
+	bool bDestroyOnEffectRemoval = false;
 	
 	UFUNCTION(BlueprintCallable)
 	void ApplyGameplayEffectToTargetActor(AActor* TargetActor, const FEffectApplicationConfig& Config);

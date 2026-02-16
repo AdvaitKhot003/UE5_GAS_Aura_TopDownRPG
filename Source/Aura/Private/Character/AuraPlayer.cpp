@@ -59,17 +59,17 @@ void AAuraPlayer::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	
-	InitPlayerAbilityActorInfo(); // server
+	InitCharacterAbilityActorInfo(); // server
 }
 
 void AAuraPlayer::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 	
-	InitPlayerAbilityActorInfo(); // client
+	InitCharacterAbilityActorInfo(); // client
 }
 
-void AAuraPlayer::InitPlayerAbilityActorInfo()
+void AAuraPlayer::InitCharacterAbilityActorInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	checkf(AuraPlayerState, TEXT("AuraPlayerState is null in InitPlayerAbilityActorInfo: %s"), *GetActorNameOrLabel());
@@ -77,6 +77,11 @@ void AAuraPlayer::InitPlayerAbilityActorInfo()
 	UAbilitySystemComponent* AuraPlayerStateASC = AuraPlayerState->GetAbilitySystemComponent();
 	checkf(AuraPlayerStateASC, TEXT("AuraPlayerStateASC is null in InitPlayerAbilityActorInfo: %s"), *GetActorNameOrLabel());
 	AuraPlayerStateASC->InitAbilityActorInfo(AuraPlayerState, this);
+	
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AuraPlayerStateASC))
+	{
+		AuraASC->CharacterAbilityActorInfoSet();
+	}
 	
 	AbilitySystemComponent = AuraPlayerStateASC;
 	AttributeSet = AuraPlayerState->GetAttributeSet();
