@@ -17,4 +17,10 @@ namespace AuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(AttributeTag_Primary_Intelligence, "AttributeTag.Primary.Intelligence");
 	UE_DEFINE_GAMEPLAY_TAG(AttributeTag_Primary_Resilience, "AttributeTag.Primary.Resilience");
 	UE_DEFINE_GAMEPLAY_TAG(AttributeTag_Primary_Vigor, "AttributeTag.Primary.Vigor");
+	
+	/** Message Tags **/
+	UE_DEFINE_GAMEPLAY_TAG(MessageTag_HealthPotion, "MessageTag.HealthPotion");
+	UE_DEFINE_GAMEPLAY_TAG(MessageTag_ManaPotion, "MessageTag.ManaPotion");
+	UE_DEFINE_GAMEPLAY_TAG(MessageTag_HealthCrystal, "MessageTag.HealthCrystal");
+	UE_DEFINE_GAMEPLAY_TAG(MessageTag_ManaCrystal, "MessageTag.ManaCrystal");
 }
