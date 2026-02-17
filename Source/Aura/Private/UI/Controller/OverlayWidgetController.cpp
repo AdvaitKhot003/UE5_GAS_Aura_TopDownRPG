@@ -57,10 +57,10 @@ void UOverlayWidgetController::HandleEffectTags(const FGameplayTagContainer& Ass
 {
 	for (const FGameplayTag& Tag : AssetTags)
 	{
-		const FString Message = FString::Printf(TEXT("Gameplay Effect Tag: %s"), *Tag.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Message);
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *Message);
+		FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName(TEXT("MessageTag")));
+		if (!Tag.MatchesTag(MessageTag)) return;
 		
-		FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+		const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+		MessageWidgetRowDelegate.Broadcast(*Row);
 	}
 }

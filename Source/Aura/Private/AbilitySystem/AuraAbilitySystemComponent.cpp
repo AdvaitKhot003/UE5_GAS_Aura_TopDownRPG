@@ -11,8 +11,8 @@ void UAuraAbilitySystemComponent::CharacterAbilityActorInfoSet()
 void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec,
 	FActiveGameplayEffectHandle ActiveEffectHandle)
 {
-	FGameplayTagContainer TagContainer;
-	EffectSpec.GetAllAssetTags(TagContainer);
+	FGameplayTagContainer AssetTags;
+	EffectSpec.GetAllAssetTags(AssetTags);
 	
-	EffectAssetTags.Broadcast(TagContainer);
+	EffectAssetTags.Broadcast(AssetTags);
 }
