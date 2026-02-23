@@ -23,6 +23,8 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 	
+	virtual int32 GetCharacterLevel() override;
+	
 protected:
 	virtual void InitCharacterAbilityActorInfo() override;
 	

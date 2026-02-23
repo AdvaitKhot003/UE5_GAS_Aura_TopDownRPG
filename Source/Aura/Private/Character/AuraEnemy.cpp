@@ -59,3 +59,8 @@ void AAuraEnemy::UnhighlightActor()
 	GetMesh()->SetRenderCustomDepth(false);
 	WeaponMesh->SetRenderCustomDepth(false);
 }
+
+int32 AAuraEnemy::GetCharacterLevel()
+{
+	return EnemyLevel;
+}

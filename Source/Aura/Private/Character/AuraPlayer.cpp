@@ -69,6 +69,13 @@ void AAuraPlayer::OnRep_PlayerState()
 	InitCharacterAbilityActorInfo(); // client
 }
 
+int32 AAuraPlayer::GetCharacterLevel()
+{
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	checkf(AuraPlayerState, TEXT("AuraPlayerState is null in GetCharacterLevel: %s"), *GetActorNameOrLabel());
+	return AuraPlayerState->GetPlayerLevel();
+}
+
 void AAuraPlayer::InitCharacterAbilityActorInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
