@@ -62,7 +62,7 @@ public:
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 	
 	/** ============================================================
-	 *                    PRIMARY ATTRIBUTES
+	*                    PRIMARY ATTRIBUTES
 	*  Player-invested stats (level ups, gear, etc.)
 	*  These DO NOT directly affect gameplay.
 	*  They are used to DERIVE secondary attributes.

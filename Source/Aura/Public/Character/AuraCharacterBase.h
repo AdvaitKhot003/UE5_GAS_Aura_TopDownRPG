@@ -38,5 +38,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 	
-	void InitializePrimaryAttributes();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
+	
+	void ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float EffectLevel = 1.f);
+	void InitializeDefaultAttributes();
 };
