@@ -35,22 +35,22 @@ void AAuraCharacterBase::InitCharacterAbilityActorInfo()
 void AAuraCharacterBase::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float EffectLevel)
 {
 	if (!HasAuthority()) return;
-	
+
 	checkf(GameplayEffectClass,
 		TEXT("GameplayEffectClass is null in ApplyGameplayEffectToTarget: %s"), *GetActorNameOrLabel());
-	
+
 	UAbilitySystemComponent* SourceASC = GetAbilitySystemComponent();
-	
 	if (!SourceASC) return;
-	
+
 	FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
+	EffectContextHandle.AddInstigator(this, this);
 	EffectContextHandle.AddSourceObject(this);
-	
+
 	const FGameplayEffectSpecHandle EffectSpecHandle =
 		SourceASC->MakeOutgoingSpec(GameplayEffectClass, EffectLevel, EffectContextHandle);
-	
+
 	if (!EffectSpecHandle.IsValid()) return;
-	
+
 	const FGameplayEffectSpec& EffectSpec = *EffectSpecHandle.Data.Get();
 	SourceASC->ApplyGameplayEffectSpecToTarget(EffectSpec, SourceASC);
 }
