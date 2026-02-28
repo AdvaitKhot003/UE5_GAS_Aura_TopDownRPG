@@ -30,12 +30,46 @@ namespace AuraGameplayTags
 		"Increases maximum health and overall survivability");
 	
 	/** Secondary Attribute Tags **/
-	UE_DEFINE_GAMEPLAY_TAG(AttributeTag_Vital_MaxHealth, "AttributeTag.Vital.MaxHealth");
-	UE_DEFINE_GAMEPLAY_TAG(AttributeTag_Vital_MaxMana, "AttributeTag.Vital.MaxMana");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_Armor, "AttributeTag.Secondary.Armor",
+		"Reduces incoming damage and increases Block Chance; derived from Resilience");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_ArmorPenetration, "AttributeTag.Secondary.ArmorPenetration",
+		"Ignores a percentage of enemy Armor and increases Critical Hit Chance");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_BlockChance, "AttributeTag.Secondary.BlockChance",
+		"Chance to block incoming attacks and reduce their damage");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_CriticalHitChance, "AttributeTag.Secondary.CriticalHitChance",
+		"Chance to deal a critical hit for increased damage");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_CriticalHitDamage, "AttributeTag.Secondary.CriticalHitDamage",
+		"Bonus damage applied when a critical hit occurs");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_CriticalHitResistance, "AttributeTag.Secondary.CriticalHitResistance",
+		"Reduces incoming enemy critical hit chance");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_HealthRegeneration, "AttributeTag.Secondary.HealthRegeneration",
+		"Amount of health regenerated per second; derived from Vigor");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_ManaRegeneration, "AttributeTag.Secondary.ManaRegeneration",
+		"Amount of mana regenerated per second; derived from Intelligence");
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_MaxHealth, "AttributeTag.Secondary.MaxHealth",
+		"Maximum health capacity derived from Vigor");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_MaxMana, "AttributeTag.Secondary.MaxMana",
+		"Maximum mana capacity derived from Intelligence");
 	
 	/** Message Tags **/
-	UE_DEFINE_GAMEPLAY_TAG(MessageTag_HealthPotion, "MessageTag.HealthPotion");
-	UE_DEFINE_GAMEPLAY_TAG(MessageTag_ManaPotion, "MessageTag.ManaPotion");
-	UE_DEFINE_GAMEPLAY_TAG(MessageTag_HealthCrystal, "MessageTag.HealthCrystal");
-	UE_DEFINE_GAMEPLAY_TAG(MessageTag_ManaCrystal, "MessageTag.ManaCrystal");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(MessageTag_HealthPotion, "MessageTag.HealthPotion",
+		"Triggered when player picks up a health potion to restore health and update UI");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(MessageTag_ManaPotion, "MessageTag.ManaPotion",
+		"Triggered when player picks up a mana potion to restore mana and update UI");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(MessageTag_HealthCrystal, "MessageTag.HealthCrystal",
+		"Triggered when player collects a health crystal for instant or bonus healing");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(MessageTag_ManaCrystal, "MessageTag.ManaCrystal",
+		"Triggered when player collects a mana crystal for instant or bonus mana");
 }

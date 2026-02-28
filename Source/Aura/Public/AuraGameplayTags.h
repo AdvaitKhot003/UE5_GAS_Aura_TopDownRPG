@@ -20,8 +20,16 @@ namespace AuraGameplayTags
 	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Primary_Vigor);
 	
 	/** Secondary Attribute Tags **/
-	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Vital_MaxHealth);
-	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Vital_MaxMana);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_Armor);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_ArmorPenetration);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_BlockChance);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_CriticalHitChance);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_CriticalHitDamage);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_CriticalHitResistance);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_HealthRegeneration);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_ManaRegeneration);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_MaxHealth);
+	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttributeTag_Secondary_MaxMana);
 	
 	/** Message Tags **/
 	AURA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(MessageTag_HealthPotion);
