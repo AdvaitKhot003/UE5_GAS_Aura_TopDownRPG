@@ -15,6 +15,24 @@ UAuraAttributeSet::UAuraAttributeSet()
 	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Primary_Intelligence, GetIntelligenceAttribute);
 	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Primary_Resilience, GetResilienceAttribute);
 	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Primary_Vigor, GetVigorAttribute);
+	
+	/** Secondary Attributes **/
+	
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_Armor, GetArmorAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_ArmorPenetration, GetArmorPenetrationAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_BlockChance, GetBlockChanceAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_CriticalHitChance, GetCriticalHitChanceAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_CriticalHitDamage, GetCriticalHitDamageAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_CriticalHitResistance, GetCriticalHitResistanceAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_HealthRegeneration, GetHealthRegenerationAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_ManaRegeneration, GetManaRegenerationAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_MaxHealth, GetMaxHealthAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Secondary_MaxMana, GetMaxManaAttribute);
+	
+	/** Core Attributes **/
+	
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Vital_Health, GetHealthAttribute);
+	TagsToAttributesMap.Add(AuraGameplayTags::AttributeTag_Vital_Mana, GetManaAttribute);
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
