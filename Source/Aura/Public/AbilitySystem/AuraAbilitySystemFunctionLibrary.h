@@ -7,7 +7,6 @@
 #include "AuraAbilitySystemFunctionLibrary.generated.h"
 
 class UAttributeMenuWidgetController;
-struct FWidgetControllerParams;
 class UOverlayWidgetController;
 
 /**
@@ -19,9 +18,9 @@ class AURA_API UAuraAbilitySystemFunctionLibrary : public UBlueprintFunctionLibr
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemFunctionLibrary|WidgetController")
+	UFUNCTION(BlueprintPure, Category="Aura|WidgetController", meta = (WorldContext="WorldContextObject"))
 	static UOverlayWidgetController* BP_GetOverlayWidgetController(const UObject* WorldContextObject);
-	
-	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemFunctionLibrary|WidgetController")
+
+	UFUNCTION(BlueprintPure, Category="Aura|WidgetController", meta = (WorldContext="WorldContextObject"))
 	static UAttributeMenuWidgetController* BP_GetAttributeMenuWidgetController(const UObject* WorldContextObject);
 };
