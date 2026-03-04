@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UI/Controller/AuraWidgetController.h"
 #include "AttributeMenuWidgetController.generated.h"
 
 class UDataAsset_AuraAttributeInfo;
+struct FGameplayAttribute;
 struct FAuraAttributeInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAuraAttributeInfoSignature, const FAuraAttributeInfo&, AttributeInfo);
@@ -22,6 +24,7 @@ class AURA_API UAttributeMenuWidgetController : public UAuraWidgetController
 public:
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
+	void BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const;
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FAuraAttributeInfoSignature OnAttributeInfoChanged;
