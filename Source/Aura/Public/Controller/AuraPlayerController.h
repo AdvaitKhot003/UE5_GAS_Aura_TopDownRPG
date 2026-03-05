@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
@@ -31,6 +32,9 @@ private:
 	TObjectPtr<UDataAsset_AuraInputConfig> AuraInputConfig;
 	
 	void Input_Move(const FInputActionValue& InputActionValue);
+	void Input_AbilityPressed(FGameplayTag InputTag);
+	void Input_AbilityReleased(FGameplayTag InputTag);
+	void Input_AbilityHeld(FGameplayTag InputTag);
 	
 	void TraceUnderCursor();
 	
