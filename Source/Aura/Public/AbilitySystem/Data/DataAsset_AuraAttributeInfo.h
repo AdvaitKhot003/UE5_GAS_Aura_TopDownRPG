@@ -23,6 +23,11 @@ struct FAuraAttributeInfo
 	
 	UPROPERTY(BlueprintReadOnly)
 	float AttributeValue = 0.f;
+	
+	bool IsValid() const
+	{
+		return AttributeTag.IsValid() && !AttributeName.IsEmpty() && !AttributeDescription.IsEmpty();
+	}
 };
 
 /**
@@ -34,8 +39,8 @@ class AURA_API UDataAsset_AuraAttributeInfo : public UDataAsset
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Attribute|Data"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "AttributeTag"))
 	TArray<FAuraAttributeInfo> AttributeInfos;
 
-	FAuraAttributeInfo FindAttributeInfoForTag(const FGameplayTag& InAttributeTag, bool bAttributeInfoNotFound = false) const;
+	FAuraAttributeInfo FindAttributeInfoByTag(const FGameplayTag& InAttributeTag, bool bAttributeInfoNotFound = false) const;
 };

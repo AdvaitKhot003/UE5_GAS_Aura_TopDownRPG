@@ -37,7 +37,7 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag, const FGameplayAttribute& Attribute) const
 {
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
-	FAuraAttributeInfo AttributeInfoFound = AttributeInfoDataAsset->FindAttributeInfoForTag(AttributeTag);
+	FAuraAttributeInfo AttributeInfoFound = AttributeInfoDataAsset->FindAttributeInfoByTag(AttributeTag);
 	AttributeInfoFound.AttributeValue = Attribute.GetNumericValue(AuraAttributeSet);
 	OnAttributeInfoChanged.Broadcast(AttributeInfoFound);
 }

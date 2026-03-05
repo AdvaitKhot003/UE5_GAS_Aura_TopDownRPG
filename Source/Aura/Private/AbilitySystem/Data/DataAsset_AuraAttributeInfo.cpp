@@ -3,11 +3,11 @@
 
 #include "AbilitySystem/Data/DataAsset_AuraAttributeInfo.h"
 
-FAuraAttributeInfo UDataAsset_AuraAttributeInfo::FindAttributeInfoForTag(const FGameplayTag& InAttributeTag, bool bAttributeInfoNotFound) const
+FAuraAttributeInfo UDataAsset_AuraAttributeInfo::FindAttributeInfoByTag(const FGameplayTag& InAttributeTag, bool bAttributeInfoNotFound) const
 {
 	for (const FAuraAttributeInfo& AttributeInfo : AttributeInfos)
 	{
-		if (AttributeInfo.AttributeTag == InAttributeTag)
+		if (AttributeInfo.IsValid() && AttributeInfo.AttributeTag == InAttributeTag)
 		{
 			return AttributeInfo;
 		}

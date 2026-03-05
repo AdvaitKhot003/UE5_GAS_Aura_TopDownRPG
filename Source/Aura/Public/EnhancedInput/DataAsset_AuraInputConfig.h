@@ -15,7 +15,7 @@ struct FAuraInputActionConfig
 {
 	GENERATED_BODY()
 
-	FAuraInputActionConfig() : InputAction(nullptr){}
+	FAuraInputActionConfig() : InputTag(FGameplayTag()), InputAction(nullptr){}
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "InputTag"))
 	FGameplayTag InputTag;
@@ -44,5 +44,5 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FAuraInputActionConfig> NativeInputActions;
 
-	TObjectPtr<UInputAction> FindNativeInputActionByTag(const FGameplayTag& InInputTag) const;
+	TObjectPtr<UInputAction> FindNativeInputActionByTag(const FGameplayTag& InInputTag, bool bInputActionNotFound = false) const;
 };

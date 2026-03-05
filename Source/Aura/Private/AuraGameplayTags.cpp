@@ -9,6 +9,24 @@ namespace AuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Move, "InputTag.Move",
 		"Input tag for character movement input");
 	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_LMB, "InputTag.LMB",
+		"Input tag for left mouse button");
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_RMB, "InputTag.RMB",
+		"Input tag for right mouse button");
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_1, "InputTag.1",
+		"Input tag for 1 key on keyboard");
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_2, "InputTag.2",
+		"Input tag for 2 key on keyboard");
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_3, "InputTag.3",
+		"Input tag for 3 key on keyboard");
+	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_4, "InputTag.4",
+		"Input tag for 4 key on keyboard");
+	
 	/** Vital Attribute Tags **/
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Vital_Health, "AttributeTag.Vital.Health",
 		"Current health value, modified by damage, healing, and regeneration");
