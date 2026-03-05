@@ -51,5 +51,5 @@ protected:
 	
 	void ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float EffectLevel = 1.f);
 	void InitializeDefaultAttributes();
-	void GiveStartUpAbilitiesAndActivateOnce();
+	void GiveStartUpAbilities();
 };

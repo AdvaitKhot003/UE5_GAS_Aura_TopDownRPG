@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UAuraAbilitySystemComponent;
 class UDataAsset_AuraInputConfig;
 class IEnemyInterface;
 struct FInputActionValue;
@@ -43,4 +44,8 @@ private:
 	
 	UPROPERTY(Transient)
 	TScriptInterface<IEnemyInterface> CurrentHitResultActor;
+	
+	UPROPERTY()
+	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+	UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
 };

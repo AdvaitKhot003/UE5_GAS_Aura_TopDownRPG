@@ -33,12 +33,12 @@ void AAuraCharacterBase::InitCharacterAbilityActorInfo()
 	
 }
 
-void AAuraCharacterBase::GiveStartUpAbilitiesAndActivateOnce()
+void AAuraCharacterBase::GiveStartUpAbilities()
 {
 	if (!HasAuthority()) return;
 	
 	UAuraAbilitySystemComponent* AuraASC = CastChecked<UAuraAbilitySystemComponent>(GetAbilitySystemComponent());
-	AuraASC->GiveStartUpAbilitiesAndActivateOnce(StartUpAbilities);
+	AuraASC->GiveStartUpAbilities(StartUpAbilities);
 }
 
 void AAuraCharacterBase::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& GameplayEffectClass, float EffectLevel)

@@ -19,7 +19,11 @@ class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent
 	
 public:
 	void CharacterAbilityActorInfoSet();
-	void GiveStartUpAbilitiesAndActivateOnce(const TArray<TSubclassOf<UGameplayAbility>>& StartUpAbilities);
+	void GiveStartUpAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartUpAbilities);
+	
+	void OnInputAbilityPressed(const FGameplayTag& InputTag);
+	void OnInputAbilityReleased(const FGameplayTag& InputTag);
+	void OnInputAbilityHeld(const FGameplayTag& InputTag);
 	
 	FEffectAssetTagsDelegate EffectAssetTags;
 	
