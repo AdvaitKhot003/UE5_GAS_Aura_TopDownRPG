@@ -43,6 +43,9 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FAuraInputActionConfig> NativeInputActions;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
+	TArray<FAuraInputActionConfig> AbilityInputActions;
 
 	TObjectPtr<UInputAction> FindNativeInputActionByTag(const FGameplayTag& InInputTag, bool bInputActionNotFound = false) const;
 };
