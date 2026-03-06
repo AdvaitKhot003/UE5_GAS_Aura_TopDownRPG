@@ -2,7 +2,6 @@
 
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
-
 #include "AbilitySystem/Abilities/AuraGameplayAbility.h"
 
 void UAuraAbilitySystemComponent::CharacterAbilityActorInfoSet()
@@ -39,7 +38,7 @@ void UAuraAbilitySystemComponent::OnInputAbilityReleased(const FGameplayTag& Inp
 	
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag)) return;
+		if (!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag)) continue;
 		
 		AbilitySpecInputReleased(AbilitySpec);
 	}
@@ -51,7 +50,7 @@ void UAuraAbilitySystemComponent::OnInputAbilityHeld(const FGameplayTag& InputTa
 	
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if (!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag)) return;
+		if (!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag)) continue;
 		
 		AbilitySpecInputPressed(AbilitySpec);
 		

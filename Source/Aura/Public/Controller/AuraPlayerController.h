@@ -11,6 +11,7 @@ class UAuraAbilitySystemComponent;
 class UDataAsset_AuraInputConfig;
 class IEnemyInterface;
 struct FInputActionValue;
+class USplineComponent;
 
 /**
  * 
@@ -48,4 +49,16 @@ private:
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
 	UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
+	
+	FVector CachedDestination = FVector::ZeroVector;
+	float FollowTime = 0.f;
+	float ShortPressThreshold = 0.5f;
+	bool bAutoRunning = false;
+	bool bTargeting = false;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|DataAsset", meta = (AllowPrivateAccess = "true"))
+	float AutoRunAcceptanceRadius = 50.f;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input|DataAsset", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USplineComponent> SplineComponent;
 };
