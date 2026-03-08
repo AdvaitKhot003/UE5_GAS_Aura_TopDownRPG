@@ -33,6 +33,12 @@ void AAuraCharacterBase::InitCharacterAbilityActorInfo()
 	
 }
 
+FVector AAuraCharacterBase::GetCombatSocketLocation()
+{
+	check(WeaponMesh);
+	return WeaponMesh->GetSocketLocation(WeaponTipSocketName);
+}
+
 void AAuraCharacterBase::GiveStartUpAbilities()
 {
 	if (!HasAuthority()) return;
