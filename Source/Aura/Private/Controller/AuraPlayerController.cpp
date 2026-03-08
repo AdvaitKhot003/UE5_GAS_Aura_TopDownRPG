@@ -16,7 +16,6 @@
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
-	
 	SplineComponent = CreateDefaultSubobject<USplineComponent>("SplineComponent");
 }
 
@@ -41,7 +40,6 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponen
 
 void AAuraPlayerController::TraceUnderCursor()
 {
-	FHitResult CursorHitResult;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHitResult);
 
 	LastHitResultActor = CurrentHitResultActor;
@@ -59,16 +57,8 @@ void AAuraPlayerController::TraceUnderCursor()
 	}
 	
 	if (LastHitResultActor == CurrentHitResultActor) return;
-
-	if (LastHitResultActor)
-	{
-		LastHitResultActor->UnhighlightActor();
-	}
-
-	if (CurrentHitResultActor)
-	{
-		CurrentHitResultActor->HighlightActor();
-	}
+	if (LastHitResultActor) LastHitResultActor->UnhighlightActor();
+	if (CurrentHitResultActor) CurrentHitResultActor->HighlightActor();
 }
 
 void AAuraPlayerController::ClickToAutoRun()
@@ -166,28 +156,21 @@ void AAuraPlayerController::Input_AbilityHeld(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(AuraGameplayTags::InputTag_LMB))
 	{
-		if (GetAuraAbilitySystemComponent())
-		{
-			GetAuraAbilitySystemComponent()->OnInputAbilityHeld(InputTag);
-		}
+		if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->OnInputAbilityHeld(InputTag);
 		return;
 	}
 
 	if (bTargeting)
 	{
-		if (GetAuraAbilitySystemComponent())
-		{
-			GetAuraAbilitySystemComponent()->OnInputAbilityHeld(InputTag);
-		}
+		if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->OnInputAbilityHeld(InputTag);
 	}
 	else
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
-		FHitResult HitResult;
 		
-		if (GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
+		if (CursorHitResult.IsValidBlockingHit())
 		{
-			CachedDestination = HitResult.ImpactPoint;
+			CachedDestination = CursorHitResult.ImpactPoint;
 		}
 		
 		APawn* OwningPawn = GetPawn();
@@ -202,19 +185,13 @@ void AAuraPlayerController::Input_AbilityReleased(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(AuraGameplayTags::InputTag_LMB))
 	{
-		if (GetAuraAbilitySystemComponent())
-		{
-			GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
-		}
+		if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
 		return;
 	}
 	
 	if (bTargeting)
 	{
-		if (GetAuraAbilitySystemComponent())
-		{
-			GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
-		}
+		if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
 	}
 	else
 	{
@@ -232,7 +209,6 @@ void AAuraPlayerController::Input_AbilityReleased(FGameplayTag InputTag)
 			for (const FVector& PathPointLocation : NavigationPath->PathPoints)
 			{
 				SplineComponent->AddSplinePoint(PathPointLocation, ESplineCoordinateSpace::World);
-				DrawDebugSphere(GetWorld(), PathPointLocation, 10.f, 10, FColor::Red, false, 5.f);
 			}
 			SplineComponent->UpdateSpline();
 			CachedDestination = NavigationPath->PathPoints.Last();

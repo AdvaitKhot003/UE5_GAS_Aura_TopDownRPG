@@ -38,6 +38,9 @@ private:
 	void Input_AbilityReleased(FGameplayTag InputTag);
 	void Input_AbilityHeld(FGameplayTag InputTag);
 	
+	UPROPERTY(Transient)
+	FHitResult CursorHitResult;
+	
 	void TraceUnderCursor();
 	void ClickToAutoRun();
 	
