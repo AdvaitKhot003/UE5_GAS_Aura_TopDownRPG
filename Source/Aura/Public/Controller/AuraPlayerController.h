@@ -39,6 +39,7 @@ private:
 	void Input_AbilityHeld(FGameplayTag InputTag);
 	
 	void TraceUnderCursor();
+	void ClickToAutoRun();
 	
 	UPROPERTY(Transient)
 	TScriptInterface<IEnemyInterface> LastHitResultActor;

@@ -24,10 +24,9 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 
-	if (IsLocalController())
-	{
-		TraceUnderCursor();
-	}
+	if (!IsLocalController()) return;
+	TraceUnderCursor();
+	ClickToAutoRun();
 }
 
 UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponent()
@@ -69,6 +68,28 @@ void AAuraPlayerController::TraceUnderCursor()
 	if (CurrentHitResultActor)
 	{
 		CurrentHitResultActor->HighlightActor();
+	}
+}
+
+void AAuraPlayerController::ClickToAutoRun()
+{
+	if (!bAutoRunning) return;
+
+	APawn* OwningPawn = GetPawn();
+	if (!OwningPawn) return;
+
+	const float ClosestKey = SplineComponent->FindInputKeyClosestToWorldLocation(OwningPawn->GetActorLocation());
+
+	const FVector Direction = SplineComponent->GetDirectionAtSplineInputKey(ClosestKey, ESplineCoordinateSpace::World);
+
+	OwningPawn->AddMovementInput(Direction);
+
+	const FVector LocationOnSpline = SplineComponent->GetLocationAtSplineInputKey(ClosestKey, ESplineCoordinateSpace::World);
+	const float DistanceToDestination = FVector::Dist(LocationOnSpline, CachedDestination);
+
+	if (DistanceToDestination < AutoRunAcceptanceRadius)
+	{
+		bAutoRunning = false;
 	}
 }
 
@@ -141,52 +162,6 @@ void AAuraPlayerController::Input_AbilityPressed(FGameplayTag InputTag)
 	}
 }
 
-void AAuraPlayerController::Input_AbilityReleased(FGameplayTag InputTag)
-{
-	if (!InputTag.MatchesTagExact(AuraGameplayTags::InputTag_LMB))
-	{
-		if (GetAuraAbilitySystemComponent())
-		{
-			GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
-		}
-		return;
-	}
-	
-	if (bTargeting)
-	{
-		if (GetAuraAbilitySystemComponent())
-		{
-			GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
-		}
-	}
-	else
-	{
-		const APawn* OwningPawn = GetPawn();
-		if (!OwningPawn) return;
-		
-		if (FollowTime <= ShortPressThreshold && CachedDestination != OwningPawn->GetActorLocation())
-		{
-			const UNavigationPath* NavigationPath = UNavigationSystemV1::FindPathToLocationSynchronously(
-				this, OwningPawn->GetActorLocation(), CachedDestination);
-			
-			if (!NavigationPath) return;
-			
-			SplineComponent->ClearSplinePoints();
-			for (const FVector& PathPointLocation : NavigationPath->PathPoints)
-			{
-				SplineComponent->AddSplinePoint(PathPointLocation, ESplineCoordinateSpace::World);
-				DrawDebugSphere(GetWorld(), PathPointLocation, 10.f, 10, FColor::Red, false, 5.f);
-			}
-			
-			CachedDestination = NavigationPath->PathPoints.Last();
-			bAutoRunning = true;
-		}
-		
-		FollowTime = 0.f;
-		bTargeting = false;
-	}
-}
-
 void AAuraPlayerController::Input_AbilityHeld(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(AuraGameplayTags::InputTag_LMB))
@@ -220,5 +195,51 @@ void AAuraPlayerController::Input_AbilityHeld(FGameplayTag InputTag)
 		
 		const FVector WorldDirection = (CachedDestination - OwningPawn->GetActorLocation()).GetSafeNormal();
 		OwningPawn->AddMovementInput(WorldDirection);
+	}
+}
+
+void AAuraPlayerController::Input_AbilityReleased(FGameplayTag InputTag)
+{
+	if (!InputTag.MatchesTagExact(AuraGameplayTags::InputTag_LMB))
+	{
+		if (GetAuraAbilitySystemComponent())
+		{
+			GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
+		}
+		return;
+	}
+	
+	if (bTargeting)
+	{
+		if (GetAuraAbilitySystemComponent())
+		{
+			GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
+		}
+	}
+	else
+	{
+		const APawn* OwningPawn = GetPawn();
+		if (!OwningPawn) return;
+		
+		if (FollowTime <= ShortPressThreshold && CachedDestination != OwningPawn->GetActorLocation())
+		{
+			const UNavigationPath* NavigationPath = UNavigationSystemV1::FindPathToLocationSynchronously(
+				this, OwningPawn->GetActorLocation(), CachedDestination);
+			
+			if (!NavigationPath || NavigationPath->PathPoints.Num() == 0) return;
+			
+			SplineComponent->ClearSplinePoints();
+			for (const FVector& PathPointLocation : NavigationPath->PathPoints)
+			{
+				SplineComponent->AddSplinePoint(PathPointLocation, ESplineCoordinateSpace::World);
+				DrawDebugSphere(GetWorld(), PathPointLocation, 10.f, 10, FColor::Red, false, 5.f);
+			}
+			SplineComponent->UpdateSpline();
+			CachedDestination = NavigationPath->PathPoints.Last();
+			bAutoRunning = true;
+		}
+		
+		FollowTime = 0.f;
+		bTargeting = false;
 	}
 }
