@@ -78,6 +78,10 @@ namespace AuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttributeTag_Secondary_MaxMana, "AttributeTag.Secondary.MaxMana",
 		"Maximum mana capacity derived from Intelligence");
 	
+	/** Event Tags **/
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(EventTag_Montage_FireBolt, "EventTag.Montage.FireBolt", 
+		"Fired during FireBolt montage to trigger gameplay events.");
+	
 	/** Message Tags **/
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(MessageTag_HealthPotion, "MessageTag.HealthPotion",
 		"Triggered when player picks up a health potion to restore health and update UI");
