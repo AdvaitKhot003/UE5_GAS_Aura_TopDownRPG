@@ -2,6 +2,7 @@
 
 
 #include "AuraAssetManager.h"
+#include "AbilitySystemGlobals.h"
 
 UAuraAssetManager& UAuraAssetManager::Get()
 {
@@ -14,4 +15,7 @@ UAuraAssetManager& UAuraAssetManager::Get()
 void UAuraAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();
+	
+	// This Is Required To Use Target Data
+	UAbilitySystemGlobals::Get().InitGlobalData();
 }
