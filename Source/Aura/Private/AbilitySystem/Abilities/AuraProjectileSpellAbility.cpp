@@ -13,7 +13,10 @@ void UAuraProjectileSpellAbility::ActivateAbility(const FGameplayAbilitySpecHand
 
 void UAuraProjectileSpellAbility::SpawnProjectile()
 {
-	if (!GetAvatarActorFromActorInfo()->HasAuthority()) return;
+	const bool bHasAuthority = GetAvatarActorFromActorInfo()->HasAuthority();
+	UE_LOG(LogTemp, Warning, TEXT("SpawnProjectile Authority: %d"), bHasAuthority);
+
+	if (!bHasAuthority) return;
 
 	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
