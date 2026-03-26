@@ -10,6 +10,7 @@
 #include "Controller/AuraPlayerState.h"
 #include "Controller/AuraPlayerController.h"
 #include "UI/HUD/AuraHUD.h"
+#include "Aura/Aura.h"
 
 AAuraPlayer::AAuraPlayer()
 {
@@ -53,6 +54,7 @@ AAuraPlayer::AAuraPlayer()
 	GetMesh()->SetCollisionResponseToAllChannels(ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECC_PROJECTILE, ECR_Overlap);
 	
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Ignore);
