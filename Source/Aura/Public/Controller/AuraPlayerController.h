@@ -34,9 +34,13 @@ private:
 	TObjectPtr<UDataAsset_AuraInputConfig> AuraInputConfig;
 	
 	void Input_Move(const FInputActionValue& InputActionValue);
+	void Input_ShiftPressed() { bShiftKeyPressed = true; };
+	void Input_ShiftReleased() { bShiftKeyPressed = false; };
 	void Input_AbilityPressed(FGameplayTag InputTag);
 	void Input_AbilityReleased(FGameplayTag InputTag);
 	void Input_AbilityHeld(FGameplayTag InputTag);
+	
+	bool bShiftKeyPressed = false;
 	
 	UPROPERTY(Transient)
 	FHitResult CursorHitResult;

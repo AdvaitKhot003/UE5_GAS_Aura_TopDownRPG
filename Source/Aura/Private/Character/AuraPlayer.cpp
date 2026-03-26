@@ -34,6 +34,9 @@ AAuraPlayer::AAuraPlayer()
 	CameraBoom->bInheritYaw = false;
 	CameraBoom->bInheritRoll = false;
 	
+	CameraBoom->bDoCollisionTest = true;
+	CameraBoom->ProbeChannel = ECC_Camera;
+	
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;

@@ -14,7 +14,7 @@ AAuraProjectile::AAuraProjectile()
 	SetRootComponent(SphereComponent);
 	SphereComponent->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	SphereComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
-	SphereComponent->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	//SphereComponent->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	SphereComponent->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 	SphereComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	

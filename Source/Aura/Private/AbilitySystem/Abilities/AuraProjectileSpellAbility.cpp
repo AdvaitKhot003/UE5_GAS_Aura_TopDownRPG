@@ -11,7 +11,7 @@ void UAuraProjectileSpellAbility::ActivateAbility(const FGameplayAbilitySpecHand
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
-void UAuraProjectileSpellAbility::SpawnProjectile()
+void UAuraProjectileSpellAbility::SpawnProjectile(const FVector& ProjectileTargetLocation)
 {
 	const bool bHasAuthority = GetAvatarActorFromActorInfo()->HasAuthority();
 	UE_LOG(LogTemp, Warning, TEXT("SpawnProjectile Authority: %d"), bHasAuthority);
@@ -21,7 +21,13 @@ void UAuraProjectileSpellAbility::SpawnProjectile()
 	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
-		const FTransform SpawnTransform(SocketLocation);
+		FRotator ProjectileRotation = (ProjectileTargetLocation - SocketLocation).Rotation();
+		ProjectileRotation.Pitch = 0.f;
+		
+		FTransform SpawnTransform;
+		SpawnTransform.SetLocation(SocketLocation);
+		SpawnTransform.SetRotation(ProjectileRotation.Quaternion());
+		
 		APawn* AvatarInstigatorPawn = Cast<APawn>(GetAvatarActorFromActorInfo());
 
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(

@@ -9,6 +9,9 @@ namespace AuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Move, "InputTag.Move",
 		"Input tag for character movement input");
 	
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Shift, "InputTag.Shift",
+		"Input tag for Shift Key Input");
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_LMB, "InputTag.LMB",
 		"Input tag for left mouse button");
 	

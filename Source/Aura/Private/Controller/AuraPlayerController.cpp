@@ -113,6 +113,12 @@ void AAuraPlayerController::SetupInputComponent()
 	AuraEnhancedInputComponent->BindNativeInputAction(AuraInputConfig, AuraGameplayTags::InputTag_Move,
 		ETriggerEvent::Triggered, this, &AAuraPlayerController::Input_Move);
 	
+	AuraEnhancedInputComponent->BindNativeInputAction(AuraInputConfig, AuraGameplayTags::InputTag_Shift,
+		ETriggerEvent::Started, this, &AAuraPlayerController::Input_ShiftPressed);
+	
+	AuraEnhancedInputComponent->BindNativeInputAction(AuraInputConfig, AuraGameplayTags::InputTag_Shift,
+		ETriggerEvent::Completed, this, &AAuraPlayerController::Input_ShiftReleased);
+	
 	AuraEnhancedInputComponent->BindAbilityInputAction(AuraInputConfig, this, &ThisClass::Input_AbilityPressed,
 		&ThisClass::Input_AbilityReleased, &ThisClass::Input_AbilityHeld);
 }
@@ -160,7 +166,7 @@ void AAuraPlayerController::Input_AbilityHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bTargeting)
+	if (bTargeting || bShiftKeyPressed)
 	{
 		if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->OnInputAbilityHeld(InputTag);
 	}
@@ -189,11 +195,9 @@ void AAuraPlayerController::Input_AbilityReleased(FGameplayTag InputTag)
 		return;
 	}
 	
-	if (bTargeting)
-	{
-		if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
-	}
-	else
+	if (GetAuraAbilitySystemComponent()) GetAuraAbilitySystemComponent()->OnInputAbilityReleased(InputTag);
+	
+	if (!bTargeting && !bShiftKeyPressed)
 	{
 		const APawn* OwningPawn = GetPawn();
 		if (!OwningPawn) return;
@@ -214,8 +218,8 @@ void AAuraPlayerController::Input_AbilityReleased(FGameplayTag InputTag)
 			CachedDestination = NavigationPath->PathPoints.Last();
 			bAutoRunning = true;
 		}
-		
-		FollowTime = 0.f;
-		bTargeting = false;
 	}
+	
+	FollowTime = 0.f;
+	bTargeting = false;
 }
