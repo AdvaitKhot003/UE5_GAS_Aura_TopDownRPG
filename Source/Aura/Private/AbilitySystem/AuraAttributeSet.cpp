@@ -6,6 +6,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 #include "AuraGameplayTags.h"
+#include "GameFramework/Character.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -176,6 +177,13 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		
+		UE_LOG(LogTemp, Warning,
+			TEXT("Target: %s | New Health: %f | Instigator: %s"),
+			*Props.TargetAvatarActor->GetName(),
+			GetHealth(),
+			*GetNameSafe(Props.SourceAvatarActor)
+		);
 	}
 
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())

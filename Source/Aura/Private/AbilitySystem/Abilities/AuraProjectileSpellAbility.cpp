@@ -4,6 +4,8 @@
 #include "AbilitySystem/Abilities/AuraProjectileSpellAbility.h"
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 
 void UAuraProjectileSpellAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -37,7 +39,20 @@ void UAuraProjectileSpellAbility::SpawnProjectile(const FVector& ProjectileTarge
 			AvatarInstigatorPawn,
 			ESpawnActorCollisionHandlingMethod::AlwaysSpawn
 		);
-
+		
+		checkf(DamageEffectClass, TEXT("DamageEffectClass is not set in %s"), *GetNameSafe(this));
+		
+		UAbilitySystemComponent* SourceASC = GetAbilitySystemComponentFromActorInfo();
+		if (!SourceASC) return;
+		
+		FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
+		EffectContextHandle.AddInstigator(AvatarInstigatorPawn, GetAvatarActorFromActorInfo());
+		
+		const FGameplayEffectSpecHandle EffectSpecHandle =
+			SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
+		
+		Projectile->DamageEffectSpecHandle = EffectSpecHandle;
+		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
 }

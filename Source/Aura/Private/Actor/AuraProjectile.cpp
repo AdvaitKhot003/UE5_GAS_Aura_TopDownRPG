@@ -8,6 +8,8 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Components/AudioComponent.h"
 #include "Aura/Aura.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 
 AAuraProjectile::AAuraProjectile()
 {
@@ -46,7 +48,8 @@ void AAuraProjectile::BeginPlay()
 		NAME_None,
 		FVector::ZeroVector,
 		EAttachLocation::KeepRelativeOffset,
-		true);
+		true
+	);
 }
 
 void AAuraProjectile::Destroyed()
@@ -73,6 +76,12 @@ void AAuraProjectile::OnSphereComponentBeginOverlap(UPrimitiveComponent* Overlap
 
 	if (HasAuthority())
 	{
+		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
+		if (!TargetASC) return;
+		
+		if (!DamageEffectSpecHandle.IsValid()) return;
+		
+		TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
 		Destroy();
 	}
 }
