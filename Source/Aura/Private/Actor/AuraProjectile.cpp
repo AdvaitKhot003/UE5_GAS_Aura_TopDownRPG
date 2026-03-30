@@ -69,6 +69,7 @@ void AAuraProjectile::OnSphereComponentBeginOverlap(UPrimitiveComponent* Overlap
 	if (bHasCollided) return;
 
 	bHasCollided = true;
+	ProjectileMovementComponent->StopMovementImmediately();
 	SphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SphereComponent->OnComponentBeginOverlap.RemoveAll(this);
 
@@ -77,11 +78,11 @@ void AAuraProjectile::OnSphereComponentBeginOverlap(UPrimitiveComponent* Overlap
 	if (HasAuthority())
 	{
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
-		if (!TargetASC) return;
 		
-		if (!DamageEffectSpecHandle.IsValid()) return;
-		
-		TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		if (TargetASC && DamageEffectSpecHandle.IsValid())
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		}
 		Destroy();
 	}
 }

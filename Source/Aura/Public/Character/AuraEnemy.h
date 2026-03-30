@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "Character/AuraCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
+#include "UI/Controller/OverlayWidgetController.h"
 #include "AuraEnemy.generated.h"
+
+class UWidgetComponent;
 
 /**
  * 
@@ -29,4 +32,13 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS|Attributes")
 	int32 EnemyLevel = 1;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS|Attributes")
+	TObjectPtr<UWidgetComponent> HealthBarComponent;
+	
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnAttributeChangedSignature OnHealthChanged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnAttributeChangedSignature OnMaxHealthChanged;
 };
